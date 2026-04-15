@@ -27,6 +27,7 @@
 		703BC4932F900BEF00C11472 /* MoviesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		703BC4A02F900BF100C11472 /* MoviesAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		703BC4AA2F900BF100C11472 /* MoviesAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		703BC4BF2F904ED100C11472 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = MoviesApp/.swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +76,7 @@
 		703BC48A2F900BEF00C11472 = {
 			isa = PBXGroup;
 			children = (
+				703BC4BF2F904ED100C11472 /* .swiftlint.yml */,
 				703BC4952F900BEF00C11472 /* MoviesApp */,
 				703BC4A32F900BF100C11472 /* MoviesAppTests */,
 				703BC4AD2F900BF100C11472 /* MoviesAppUITests */,
@@ -99,6 +101,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 703BC4B42F900BF100C11472 /* Build configuration list for PBXNativeTarget "MoviesApp" */;
 			buildPhases = (
+				703BC4BE2F904C6700C11472 /* SwiftLint */,
 				703BC48F2F900BEF00C11472 /* Sources */,
 				703BC4902F900BEF00C11472 /* Frameworks */,
 				703BC4912F900BEF00C11472 /* Resources */,
@@ -195,6 +198,9 @@
 			);
 			mainGroup = 703BC48A2F900BEF00C11472;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				703BC4BD2F904A7B00C11472 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 703BC4942F900BEF00C11472 /* Products */;
 			projectDirPath = "";
@@ -230,6 +236,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		703BC4BE2F904C6700C11472 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SWIFTLINT=\"${BUILD_DIR%Build/*}SourcePackages/artifacts/swiftlint/SwiftLintBinary/SwiftLintBinary.artifactbundle/macos/swiftlint\"\nif test -f \"$SWIFTLINT\"; then\n  \"$SWIFTLINT\"\nelif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not found, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		703BC48F2F900BEF00C11472 /* Sources */ = {
@@ -396,6 +424,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -427,6 +456,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -570,6 +600,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		703BC4BD2F904A7B00C11472 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.63.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 703BC48B2F900BEF00C11472 /* Project object */;
 }
