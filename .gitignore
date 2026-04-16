@@ -72,4 +72,5 @@ DerivedData/
 .DS_Store
 
 # API keys / xcconfig
-*.xcconfig
+Dev.xcconfig
+Prod.xcconfig
