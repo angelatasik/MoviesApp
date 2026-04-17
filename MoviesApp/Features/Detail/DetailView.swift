@@ -9,10 +9,19 @@ import SwiftUI
 import Kingfisher
 
 struct DetailView: View {
-
+    
+    private enum Layout {
+        static let castItemSize: CGFloat = 80
+        static let backdropHeight: CGFloat = 400
+        static let contentOverlap: CGFloat = 80
+        static let bottomSpacerMinLength: CGFloat = 40
+        static let separatorSize: CGFloat = 4
+        static let titleShadowRadius: CGFloat = 4
+    }
+    
     @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
-
+    
     init(movie: Movie) {
         _viewModel = State(
             initialValue: DetailViewModel(
@@ -22,11 +31,11 @@ struct DetailView: View {
             )
         )
     }
-
+    
     var body: some View {
         ZStack(alignment: .top) {
             AppGradient.background
-
+            
             ScrollView {
                 VStack(spacing: 0) {
                     backdropSection
@@ -41,10 +50,10 @@ struct DetailView: View {
                 Button {
                     router.pop()
                 } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .padding(10)
+                    Image(systemName: AppIcon.back)
+                        .font(AppTypography.sectionTitle)
+                        .foregroundStyle(AppColor.primaryText)
+                        .padding(Spacing.compact)
                         .background(.ultraThinMaterial, in: Circle())
                 }
             }
@@ -53,73 +62,73 @@ struct DetailView: View {
             await viewModel.onAppear()
         }
     }
-
+    
     // MARK: - Backdrop
-
+    
     private var backdropSection: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-
+            
             if let backdropPath = viewModel.movie.backdropPath ?? viewModel.movie.posterPath,
                let url = viewModel.imageConfig?.backdropURL(path: backdropPath, width: width) {
                 KFImage(url)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: width, height: 500)
+                    .frame(width: width, height: Layout.backdropHeight)
                     .clipped()
                     .overlay(AppGradient.imageFadeToBottom)
             } else {
-                Color.black.opacity(0.3)
+                AppColor.blackOpacity
             }
         }
-        .frame(height: 500)
+        .frame(height: Layout.backdropHeight)
     }
-
+    
     // MARK: - Content
-
+    
     private var contentSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: Spacing.large) {
             headerSection
             ratingSection
-
+            
             let overview = viewModel.detail?.overview ?? viewModel.movie.overview
             if !overview.isEmpty {
                 overviewSection(overview)
             }
-
+            
             if let credits = viewModel.credits, !credits.cast.isEmpty {
                 castSection(credits.cast)
             }
-
+            
             if let genres = viewModel.detail?.genres, !genres.isEmpty {
                 genresSection(genres)
             }
-
-            Spacer(minLength: 40)
+            
+            Spacer(minLength: Layout.bottomSpacerMinLength)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, -80) // pulls content over the fading backdrop
+        .padding(.horizontal, Spacing.large)
+        .padding(.top, -Layout.contentOverlap) // pulls content over the fading backdrop
     }
-
+    
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Spacing.small) {
             Text(viewModel.detail?.title ?? viewModel.movie.title)
-                .font(.system(size: 32, weight: .bold))
-                .foregroundStyle(.white)
-                .shadow(color: .black.opacity(0.5), radius: 4)
-
-            HStack(spacing: 10) {
+                .font(AppTypography.largeTitle)
+                .foregroundStyle(AppColor.primaryText)
+                .shadow(color: AppColor.blackOpacity, radius: Layout.titleShadowRadius)
+            
+            HStack(spacing: Spacing.compact) {
                 if let runtime = viewModel.detail?.runtime {
                     Text(runtimeString(from: runtime))
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.85))
+                        .font(AppTypography.bodyMedium)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
                 
                 if let year = yearString(from: viewModel.detail?.releaseDate ?? viewModel.movie.releaseDate) {
                     circleSeparator
                     Text(year)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.85))
+                        .font(AppTypography.bodyMedium)
+                        .foregroundStyle(AppColor.secondaryText)
                 }
             }
         }
@@ -127,52 +136,52 @@ struct DetailView: View {
     
     private var circleSeparator: some View {
         Circle()
-            .fill(.white.opacity(0.5))
-            .frame(width: 3, height: 3)
+            .fill(AppColor.mutedText)
+            .frame(width: Layout.separatorSize, height: Layout.separatorSize)
     }
-
+    
     private var ratingSection: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Spacing.small) {
             let rating = viewModel.detail?.voteAverage ?? viewModel.movie.voteAverage
             let stars = Int(rating / 2)
-
+            
             ForEach(0..<5, id: \.self) { index in
-                Image(systemName: index < stars ? "star.fill" : "star")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.yellow)
+                Image(systemName: index < stars ? AppIcon.starFilled : AppIcon.starEmpty)
+                    .font(AppTypography.body)
+                    .foregroundStyle(AppColor.accent)
             }
-
+            
             Text(String(format: "%.1f", rating))
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(.white)
-
-            Text("(\(viewModel.detail?.voteCount ?? viewModel.movie.voteCount) votes)")
-                .font(.system(size: 13))
-                .foregroundStyle(.white.opacity(0.7))
+                .font(AppTypography.bodySemibold)
+                .foregroundStyle(AppColor.primaryText)
+            
+            Text("(\(viewModel.detail?.voteCount ?? viewModel.movie.voteCount) \(Strings.Detail.votes)")
+                .font(AppTypography.smallMedium)
+                .foregroundStyle(AppColor.secondaryText)
         }
     }
-
+    
     private func overviewSection(_ overview: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Overview")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(.white)
-
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(Strings.Detail.overview)
+                .font(AppTypography.sectionTitle)
+                .foregroundStyle(AppColor.primaryText)
+            
             Text(overview)
-                .font(.system(size: 14))
-                .foregroundStyle(.white.opacity(0.8))
-                .lineSpacing(4)
+                .font(AppTypography.body)
+                .foregroundStyle(AppColor.secondaryText)
+                .lineSpacing(Spacing.extraSmall)
         }
     }
-
+    
     private func castSection(_ cast: [CastMember]) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Cast")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(.white)
-
+        VStack(alignment: .leading, spacing: Spacing.medium) {
+            Text(Strings.Detail.cast)
+                .font(AppTypography.sectionTitle)
+                .foregroundStyle(AppColor.primaryText)
+            
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 14) {
+                HStack(spacing: Spacing.balanced) {
                     ForEach(cast.prefix(15)) { member in
                         castMemberView(member)
                     }
@@ -180,70 +189,68 @@ struct DetailView: View {
             }
         }
     }
-
+    
     private func castMemberView(_ member: CastMember) -> some View {
-        VStack(spacing: 6) {
+        VStack(spacing: Spacing.narrow) {
             if let path = member.profilePath,
-               let url = viewModel.imageConfig?.profileURL(path: path, width: 70) {
+               let url = viewModel.imageConfig?.profileURL(path: path, width: Layout.castItemSize) {
                 KFImage(url)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 70, height: 70)
+                    .frame(width: Layout.castItemSize, height: Layout.castItemSize)
                     .clipShape(Circle())
             } else {
                 Circle()
-                    .fill(.white.opacity(0.1))
-                    .frame(width: 70, height: 70)
+                    .fill(AppColor.placeholderFill)
+                    .frame(width: Layout.castItemSize, height: Layout.castItemSize)
                     .overlay(
-                        Image(systemName: "person.fill")
-                            .foregroundStyle(.white.opacity(0.5))
+                        Image(systemName: AppIcon.personPlaceholder)
+                            .foregroundStyle(AppColor.tertiaryText)
                     )
             }
-
+            
             Text(member.name)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.white)
+                .font(AppTypography.smallMedium)
+                .foregroundStyle(AppColor.primaryText)
                 .lineLimit(1)
-                .frame(width: 80)
-
+            
             Text(member.character)
-                .font(.system(size: 10))
-                .foregroundStyle(.white.opacity(0.6))
+                .font(AppTypography.small)
+                .foregroundStyle(AppColor.tertiaryText)
                 .lineLimit(1)
-                .frame(width: 80)
         }
     }
-
+    
     private func genresSection(_ genres: [Genre]) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Genres")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(.white)
-
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(Strings.Detail.genres)
+                .font(AppTypography.sectionTitle)
+                .foregroundStyle(AppColor.primaryText)
+            
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: Spacing.small) {
                     ForEach(genres) { genre in
                         Text(genre.name)
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
+                            .font(AppTypography.smallMedium)
+                            .foregroundStyle(AppColor.primaryText)
+                            .padding(.horizontal, Spacing.balanced)
+                            .padding(.vertical, Spacing.small)
                             .background(
-                                Capsule().fill(.white.opacity(0.15))
+                                Capsule().fill(AppColor.surfaceOverlay)
                             )
                     }
                 }
             }
         }
     }
-
+    
     // MARK: - Helpers
-
+    
     private func yearString(from date: String?) -> String? {
         guard let date, date.count >= 4 else { return nil }
         return String(date.prefix(4))
     }
-
+    
     private func runtimeString(from minutes: Int) -> String {
         let hours = minutes / 60
         let mins = minutes % 60

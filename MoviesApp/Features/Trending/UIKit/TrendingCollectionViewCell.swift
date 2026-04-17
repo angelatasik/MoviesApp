@@ -12,30 +12,41 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
 
     static let reuseID = "TrendingCollectionViewCell"
 
+    // MARK: - Layout
+    
+    private enum Layout {
+          static let posterCornerRadius: CGFloat = 12
+          static let posterAspectRatio: CGFloat = 1.4
+          static let maxLines = 2
+          static let titleFontSize: CGFloat = 18
+          static let overviewFontSize: CGFloat = 14
+          static let overviewTextOpacity: CGFloat = 0.5
+      }
+    
     // MARK: - Subviews
 
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 12
+        imageView.layer.cornerRadius = Layout.posterCornerRadius
         imageView.backgroundColor = .systemGray5
         return imageView
     }()
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: Layout.titleFontSize, weight: .semibold)
+        label.numberOfLines = Layout.maxLines
         label.textColor = .white
         return label
     }()
 
     private let overviewLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor.white.withAlphaComponent(0.5)
-        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: Layout.overviewFontSize)
+        label.textColor = UIColor.white.withAlphaComponent(Layout.overviewTextOpacity)
+        label.numberOfLines = Layout.maxLines
         return label
     }()
 
@@ -55,7 +66,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         let stack = UIStackView(arrangedSubviews: [posterImageView, titleLabel, overviewLabel])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = Spacing.extraSmall
         stack.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stack)
 
@@ -66,7 +77,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
             stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             posterImageView.heightAnchor.constraint(
                 equalTo: posterImageView.widthAnchor,
-                multiplier: 1.4
+                multiplier: Layout.posterAspectRatio
             )
         ])
     }

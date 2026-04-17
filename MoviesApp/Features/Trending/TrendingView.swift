@@ -40,7 +40,7 @@ struct TrendingView: View {
                 ProgressView()
             }
         }
-        .navigationTitle("Trending")
+        .navigationTitle(Strings.Trending.title)
         .navigationBarTitleDisplayMode(.large)
         .toolbarColorScheme(.dark, for: .navigationBar)
         .task {
