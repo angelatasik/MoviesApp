@@ -11,7 +11,11 @@ import SwiftUI
 struct MoviesAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                TrendingView()
+            }
+//            .background(AppGradient.background)
+            .preferredColorScheme(.dark)
         }
     }
 }

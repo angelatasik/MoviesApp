@@ -36,4 +36,8 @@ final class MovieRepository: MovieRepositoryProtocol {
     func searchMovies(query: String, page: Int) async throws -> PagedResponse<Movie> {
         try await networkClient.fetch(Endpoint.searchMovies(query: query, page: page))
     }
+    
+    func fetchConfiguration() async throws -> TMDBConfiguration {
+        try await networkClient.fetch(Endpoint.configuration)
+    }
 }
