@@ -17,9 +17,10 @@ extension AppRoute {
     var destination: some View {
         switch self {
         case .movieDetail(let movie):
-            // TODO: Replace with DetailsView
+            DetailView(movie: movie)
         case .search:
             // TODO: Replace with SearchView
+            Text("Search View")
         }
     }
 }

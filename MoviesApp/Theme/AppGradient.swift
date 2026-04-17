@@ -8,6 +8,9 @@
 import SwiftUI
 
 enum AppGradient {
+    
+    // MARK: - Background
+    
     static var background: some View {
         LinearGradient(
             colors: [
@@ -20,4 +23,19 @@ enum AppGradient {
         )
         .ignoresSafeArea()
     }
+    
+    // MARK: - Image Overlay
+       
+       static var imageFadeToBottom: some View {
+           LinearGradient(
+               colors: [
+                   .clear,
+                   .clear,
+                   .black.opacity(0.5),
+                   .black.opacity(0.9)
+               ],
+               startPoint: .top,
+               endPoint: .bottom
+           )
+       }
 }
