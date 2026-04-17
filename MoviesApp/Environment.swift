@@ -1,6 +1,6 @@
 import Foundation
 
-enum Environment {
+enum AppEnvironment {
     enum Keys {
         static let baseURL = "API_BASE_URL"
         static let accessToken = "API_READ_ACCESS_TOKEN"

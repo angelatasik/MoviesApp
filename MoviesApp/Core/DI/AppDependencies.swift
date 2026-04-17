@@ -13,12 +13,12 @@ final class AppDependencies {
     // MARK: - Dependencies
 
     private(set) lazy var networkClient: NetworkClient = {
-        guard let baseURL = URL(string: Environment.baseURL) else {
+        guard let baseURL = URL(string: AppEnvironment.baseURL) else {
             fatalError("Invalid base URL")
         }
         return URLSessionNetworkClient(
             baseURL: baseURL,
-            interceptor: AuthInterceptor(token: Environment.accessToken)
+            interceptor: AuthInterceptor(token: AppEnvironment.accessToken)
         )
     }()
 

@@ -10,6 +10,7 @@ import SwiftUI
 struct TrendingView: View {
 
     @State private var viewModel: TrendingViewModel
+    @Environment(Router.self) private var router
 
     init() {
         _viewModel = State(
@@ -28,8 +29,7 @@ struct TrendingView: View {
                 movies: viewModel.movies,
                 imageConfig: viewModel.imageConfig,
                 onMovieSelected: { movie in
-                    // TODO: Add navigation to the Details Screen
-                    print("Selected: \(movie.title)")
+                    router.navigate(to: .movieDetail(movie))
                 },
                 onReachCell: { movie in
                     Task { await viewModel.loadMoreIfNeeded(currentItem: movie) }
@@ -55,5 +55,6 @@ struct TrendingView: View {
 #Preview {
     NavigationStack {
         TrendingView()
+            .environment(Router())
     }
 }

@@ -9,12 +9,17 @@ import SwiftUI
 
 @main
 struct MoviesAppApp: App {
+    @State private var router = Router()
+
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
+            NavigationStack(path: $router.path) {
                 TrendingView()
+                    .navigationDestination(for: AppRoute.self) { route in
+                        route.destination
+                    }
             }
-//            .background(AppGradient.background)
+            .environment(router)
             .preferredColorScheme(.dark)
         }
     }
