@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable
 @MainActor
@@ -19,6 +20,52 @@ final class DetailViewModel {
     var imageConfig: ImageConfiguration?
     var isLoading = false
     var errorMessage: String?
+    var isFavorite = false
+
+    var favoriteIcon: String {
+        isFavorite ? AppIcon.heartFilled : AppIcon.heart
+    }
+
+    var favoriteColor: Color {
+        isFavorite ? .red : AppColor.primaryText
+    }
+
+    var title: String {
+        detail?.title ?? movie.title
+    }
+
+    var overview: String {
+        detail?.overview ?? movie.overview
+    }
+
+    var releaseYear: String? {
+        let date = detail?.releaseDate ?? movie.releaseDate
+        return DateFormatting.yearString(from: date)
+    }
+
+    var rating: Double {
+        detail?.voteAverage ?? movie.voteAverage
+    }
+
+    var starCount: Int {
+        Int(rating / 2)
+    }
+
+    var formattedRating: String {
+        String(format: "%.1f", rating)
+    }
+
+    var voteCount: Int {
+        detail?.voteCount ?? movie.voteCount
+    }
+
+    var runtimeText: String? {
+        guard let minutes = detail?.runtime else { return nil }
+        let hours = minutes / 60
+        let mins = minutes % 60
+        if hours == 0 { return "\(mins)min" }
+        return "\(hours)h \(mins)min"
+    }
 
     // MARK: - Dependencies
 
@@ -53,6 +100,20 @@ final class DetailViewModel {
         await detailTask
         await creditsTask
         await configTask
+    }
+
+    func loadFavoriteState(from manager: FavoritesManager) {
+        isFavorite = manager.isFavorite(movieId: movie.id)
+    }
+
+    func toggleFavorite(using manager: FavoritesManager) {
+        isFavorite.toggle()
+        do {
+            try manager.toggleFavorite(movie: movie)
+        } catch {
+            isFavorite.toggle()
+            errorMessage = error.localizedDescription
+        }
     }
 
     // MARK: - Private

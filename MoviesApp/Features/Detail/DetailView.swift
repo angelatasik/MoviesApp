@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import SwiftData
 
 struct DetailView: View {
     
@@ -17,10 +18,12 @@ struct DetailView: View {
         static let bottomSpacerMinLength: CGFloat = 40
         static let separatorSize: CGFloat = 4
         static let titleShadowRadius: CGFloat = 4
+        static let heartIconSize: CGFloat = 22
     }
     
     @State private var viewModel: DetailViewModel
     @Environment(Router.self) private var router
+    @Environment(FavoritesManager.self) private var favoritesManager
     
     init(movie: Movie) {
         _viewModel = State(
@@ -59,6 +62,7 @@ struct DetailView: View {
             }
         }
         .task {
+            viewModel.loadFavoriteState(from: favoritesManager)
             await viewModel.onAppear()
         }
     }
@@ -91,9 +95,8 @@ struct DetailView: View {
             headerSection
             ratingSection
             
-            let overview = viewModel.detail?.overview ?? viewModel.movie.overview
-            if !overview.isEmpty {
-                overviewSection(overview)
+            if !viewModel.overview.isEmpty {
+                overviewSection(viewModel.overview)
             }
             
             if let credits = viewModel.credits, !credits.cast.isEmpty {
@@ -112,25 +115,40 @@ struct DetailView: View {
     
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
-            Text(viewModel.detail?.title ?? viewModel.movie.title)
-                .font(AppTypography.largeTitle)
-                .foregroundStyle(AppColor.primaryText)
-                .shadow(color: AppColor.blackOpacity, radius: Layout.titleShadowRadius)
-            
+            HStack {
+                Text(viewModel.title)
+                    .font(AppTypography.largeTitle)
+                    .foregroundStyle(AppColor.primaryText)
+                    .shadow(color: AppColor.blackOpacity, radius: Layout.titleShadowRadius)
+                Spacer()
+                favoriteButton
+            }
+
             HStack(spacing: Spacing.compact) {
-                if let runtime = viewModel.detail?.runtime {
-                    Text(runtimeString(from: runtime))
+                if let runtimeText = viewModel.runtimeText {
+                    Text(runtimeText)
                         .font(AppTypography.bodyMedium)
                         .foregroundStyle(AppColor.secondaryText)
                 }
-                
-                if let year = DateFormatting.yearString(from: viewModel.detail?.releaseDate ?? viewModel.movie.releaseDate) {
+
+                if let year = viewModel.releaseYear {
                     circleSeparator
                     Text(year)
                         .font(AppTypography.bodyMedium)
                         .foregroundStyle(AppColor.secondaryText)
                 }
             }
+        }
+    }
+    
+    private var favoriteButton: some View {
+        Button {
+            viewModel.toggleFavorite(using: favoritesManager)
+        } label: {
+            Image(systemName: viewModel.favoriteIcon)
+                .font(.system(size: Layout.heartIconSize))
+                .foregroundStyle(viewModel.favoriteColor)
+                .symbolEffect(.bounce, value: viewModel.isFavorite)
         }
     }
     
@@ -142,20 +160,17 @@ struct DetailView: View {
     
     private var ratingSection: some View {
         HStack(spacing: Spacing.small) {
-            let rating = viewModel.detail?.voteAverage ?? viewModel.movie.voteAverage
-            let stars = Int(rating / 2)
-            
             ForEach(0..<5, id: \.self) { index in
-                Image(systemName: index < stars ? AppIcon.starFilled : AppIcon.starEmpty)
+                Image(systemName: index < viewModel.starCount ? AppIcon.starFilled : AppIcon.starEmpty)
                     .font(AppTypography.body)
                     .foregroundStyle(AppColor.accent)
             }
-            
-            Text(String(format: "%.1f", rating))
+
+            Text(viewModel.formattedRating)
                 .font(AppTypography.bodySemibold)
                 .foregroundStyle(AppColor.primaryText)
-            
-            Text("(\(viewModel.detail?.voteCount ?? viewModel.movie.voteCount) \(Strings.Detail.votes)")
+
+            Text("(\(viewModel.voteCount) \(Strings.Detail.votes))")
                 .font(AppTypography.smallMedium)
                 .foregroundStyle(AppColor.secondaryText)
         }
@@ -244,19 +259,16 @@ struct DetailView: View {
         }
     }
     
-    // MARK: - Helpers
-    
-    
-    private func runtimeString(from minutes: Int) -> String {
-        let hours = minutes / 60
-        let mins = minutes % 60
-        if hours == 0 { return "\(mins)min" }
-        return "\(hours)h \(mins)min"
-    }
 }
 
 #Preview {
-    NavigationStack {
+    // swiftlint:disable:next force_try
+    let container = try! ModelContainer(
+        for: FavoriteMovie.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+
+    return NavigationStack {
         DetailView(
             movie: Movie(
                 id: 1,
@@ -272,5 +284,6 @@ struct DetailView: View {
             )
         )
         .environment(Router())
+        .environment(FavoritesManager(modelContext: container.mainContext))
     }
 }

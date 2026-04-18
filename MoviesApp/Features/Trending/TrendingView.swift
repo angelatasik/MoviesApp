@@ -46,8 +46,7 @@ struct TrendingView: View {
             // Left — heart icon (favorites)
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    // TODO: Add navigation to Favourite Screen
-                    print("Favorites tapped")
+                    router.navigate(to: .favorites) 
                 } label: {
                     Image(systemName: AppIcon.heart)
                         .font(AppTypography.sectionTitle)

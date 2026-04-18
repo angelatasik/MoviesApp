@@ -27,4 +27,9 @@ enum Strings {
         static let noResults = "No results found"
         static let startSearching = "Start typing to search"
     }
+    
+    enum Favorites {
+        static let title = "Favorites"
+        static let empty = "No favorites yet"
+    }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 enum AppRoute: Hashable, Sendable {
     case movieDetail(Movie)
     case search
+    case favorites
 }
 
 extension AppRoute {
@@ -20,6 +21,8 @@ extension AppRoute {
             DetailView(movie: movie)
         case .search:
             SearchView()
+        case .favorites:
+            FavoritesView()
         }
     }
 }
