@@ -19,8 +19,7 @@ extension AppRoute {
         case .movieDetail(let movie):
             DetailView(movie: movie)
         case .search:
-            // TODO: Replace with SearchView
-            Text("Search View")
+            SearchView()
         }
     }
 }

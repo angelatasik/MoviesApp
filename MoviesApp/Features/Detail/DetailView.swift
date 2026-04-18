@@ -124,7 +124,7 @@ struct DetailView: View {
                         .foregroundStyle(AppColor.secondaryText)
                 }
                 
-                if let year = yearString(from: viewModel.detail?.releaseDate ?? viewModel.movie.releaseDate) {
+                if let year = DateFormatting.yearString(from: viewModel.detail?.releaseDate ?? viewModel.movie.releaseDate) {
                     circleSeparator
                     Text(year)
                         .font(AppTypography.bodyMedium)
@@ -246,10 +246,6 @@ struct DetailView: View {
     
     // MARK: - Helpers
     
-    private func yearString(from date: String?) -> String? {
-        guard let date, date.count >= 4 else { return nil }
-        return String(date.prefix(4))
-    }
     
     private func runtimeString(from minutes: Int) -> String {
         let hours = minutes / 60

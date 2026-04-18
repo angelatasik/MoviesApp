@@ -40,8 +40,41 @@ struct TrendingView: View {
                 ProgressView()
             }
         }
-        .navigationTitle(Strings.Trending.title)
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbar {
+            // Left — heart icon (favorites)
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    // TODO: Add navigation to Favourite Screen
+                    print("Favorites tapped")
+                } label: {
+                    Image(systemName: AppIcon.heart)
+                        .font(AppTypography.sectionTitle)
+                        .foregroundStyle(AppColor.primaryText)
+                }
+            }
+            
+            // Center — title
+            ToolbarItem(placement: .principal) {
+                Text(Strings.Trending.title)
+                    .font(AppTypography.largeTitle)
+                    .foregroundStyle(
+                        AppColor.primaryText
+                    )
+            }
+            
+            // Right — search icon
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    router.navigate(to: .search)
+                } label: {
+                    Image(systemName: AppIcon.search)
+                        .font(AppTypography.sectionTitle)
+                        .foregroundStyle(AppColor.primaryText)
+                }
+            }
+        }
         .toolbarColorScheme(.dark, for: .navigationBar)
         .task {
             await viewModel.onAppear()
