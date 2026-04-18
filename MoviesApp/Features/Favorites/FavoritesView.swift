@@ -18,7 +18,6 @@ struct FavoritesView: View {
     private enum Layout {
         static let posterWidth: CGFloat = 72
         static let posterHeight: CGFloat = 100
-        static let posterCornerRadius: CGFloat = 8
     }
     
     var body: some View {
@@ -117,9 +116,9 @@ struct FavoritesView: View {
                 .resizable()
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
-                .clipShape(RoundedRectangle(cornerRadius: Layout.posterCornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
         } else {
-            RoundedRectangle(cornerRadius: Layout.posterCornerRadius)
+            RoundedRectangle(cornerRadius: CornerRadius.small)
                 .fill(AppColor.placeholderFill)
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
         }

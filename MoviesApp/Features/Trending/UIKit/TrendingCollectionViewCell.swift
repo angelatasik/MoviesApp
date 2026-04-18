@@ -15,7 +15,6 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
     // MARK: - Layout
     
     private enum Layout {
-          static let posterCornerRadius: CGFloat = 12
           static let posterAspectRatio: CGFloat = 1.4
           static let maxLines = 2
           static let titleFontSize: CGFloat = 18
@@ -29,7 +28,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = Layout.posterCornerRadius
+        imageView.layer.cornerRadius = CornerRadius.medium
         imageView.backgroundColor = .systemGray5
         return imageView
     }()

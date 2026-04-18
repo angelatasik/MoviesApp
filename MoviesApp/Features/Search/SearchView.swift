@@ -91,7 +91,7 @@ struct SearchView: View {
         }
         .padding(.horizontal, Spacing.medium)
         .frame(height: Layout.searchBarHeight)
-        .background(AppColor.surfaceOverlay, in: RoundedRectangle(cornerRadius: 12))
+        .background(AppColor.surfaceOverlay, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
         .padding(.horizontal, Spacing.large)
     }
 
@@ -203,9 +203,9 @@ struct SearchView: View {
                 .resizable()
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
         } else {
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: CornerRadius.small)
                 .fill(AppColor.placeholderFill)
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
         }
