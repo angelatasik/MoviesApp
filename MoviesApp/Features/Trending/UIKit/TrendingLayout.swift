@@ -9,25 +9,29 @@ import UIKit
 
 enum TrendingLayout {
     
-    private static let wideLayoutMinWidth: CGFloat = 600
-    private static let wideLayoutColumns = 3
-    private static let standardColumns = 2
-    private static let estimatedItemHeight: CGFloat = 300
+    // Target width for each poster — content-driven, not device-driven
+    private static let idealItemWidth: CGFloat = 180
+    
+    // Aspect ratio for movie posters (2:3 standard)
+    private static let posterAspectRatio: CGFloat = 1.5
     
     static func make() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, environment in
-            let width = environment.container.contentSize.width
-            let columns = width > wideLayoutMinWidth ? wideLayoutColumns : standardColumns
-
+            let containerWidth = environment.container.contentSize.width
+            
+            // Calculate columns dynamically based on ideal item width
+            // e.g., if container is 800pt wide and ideal item is 180pt → ~4 columns
+            let columns = max(2, Int(containerWidth / idealItemWidth))
+            
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0 / CGFloat(columns)),
-                heightDimension: .estimated(estimatedItemHeight)
+                heightDimension: .estimated(containerWidth / CGFloat(columns) * posterAspectRatio)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(estimatedItemHeight)
+                heightDimension: .estimated(containerWidth / CGFloat(columns) * posterAspectRatio)
             )
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,

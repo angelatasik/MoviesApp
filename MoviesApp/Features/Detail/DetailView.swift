@@ -13,7 +13,10 @@ struct DetailView: View {
     
     private enum Layout {
         static let castItemSize: CGFloat = 80
-        static let backdropHeight: CGFloat = 400
+        static let backdropHeightRatio: CGFloat = 0.45
+        static let backdropMaxHeight: CGFloat = 600
+        static let contentWidthRatio: CGFloat = 0.9
+        static let contentMaxWidth: CGFloat = 700
         static let contentOverlap: CGFloat = 80
         static let bottomSpacerMinLength: CGFloat = 40
         static let separatorSize: CGFloat = 4
@@ -36,16 +39,28 @@ struct DetailView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            AppGradient.background
+        GeometryReader { geometry in
+            let backdropHeight = min(
+                geometry.size.height * Layout.backdropHeightRatio,
+                Layout.backdropMaxHeight
+            )
+            let contentMaxWidth = min(
+                geometry.size.width * Layout.contentWidthRatio,
+                Layout.contentMaxWidth
+            )
             
-            ScrollView {
-                VStack(spacing: 0) {
-                    backdropSection
-                    contentSection
+            ZStack(alignment: .top) {
+                AppGradient.background
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        backdropSection(width: geometry.size.width, height: backdropHeight)
+                        contentSection(maxWidth: contentMaxWidth)
+                    }
                 }
+                .ignoresSafeArea(edges: .top)
             }
-            .ignoresSafeArea(edges: .top)
+            .frame(maxWidth: .infinity)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -69,28 +84,26 @@ struct DetailView: View {
     
     // MARK: - Backdrop
     
-    private var backdropSection: some View {
-        GeometryReader { geometry in
-            let width = geometry.size.width
-            
+    private func backdropSection(width: CGFloat, height: CGFloat) -> some View {
+        Group {
             if let backdropPath = viewModel.movie.backdropPath ?? viewModel.movie.posterPath,
                let url = viewModel.imageConfig?.backdropURL(path: backdropPath, width: width) {
                 KFImage(url)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: width, height: Layout.backdropHeight)
+                    .frame(width: width, height: height)
                     .clipped()
                     .overlay(AppGradient.imageFadeToBottom)
             } else {
                 AppColor.blackOpacity
+                    .frame(width: width, height: height)
             }
         }
-        .frame(height: Layout.backdropHeight)
     }
     
     // MARK: - Content
     
-    private var contentSection: some View {
+    private func contentSection(maxWidth: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
             headerSection
             ratingSection
@@ -109,6 +122,7 @@ struct DetailView: View {
             
             Spacer(minLength: Layout.bottomSpacerMinLength)
         }
+        .frame(maxWidth: maxWidth)
         .padding(.horizontal, Spacing.large)
         .padding(.top, -Layout.contentOverlap) // pulls content over the fading backdrop
     }
@@ -258,7 +272,6 @@ struct DetailView: View {
             }
         }
     }
-    
 }
 
 #Preview {

@@ -9,21 +9,21 @@ import UIKit
 import Kingfisher
 
 final class TrendingCollectionViewCell: UICollectionViewCell {
-
+    
     static let reuseID = "TrendingCollectionViewCell"
-
+    
     // MARK: - Layout
     
     private enum Layout {
-          static let posterAspectRatio: CGFloat = 1.4
-          static let maxLines = 2
-          static let titleFontSize: CGFloat = 18
-          static let overviewFontSize: CGFloat = 14
-          static let overviewTextOpacity: CGFloat = 0.5
-      }
+        static let posterAspectRatio: CGFloat = 1.4
+        static let maxLines = 2
+        static let titleFontSize: CGFloat = 18
+        static let overviewFontSize: CGFloat = 14
+        static let overviewTextOpacity: CGFloat = 0.5
+    }
     
     // MARK: - Subviews
-
+    
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -32,7 +32,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         imageView.backgroundColor = .systemGray5
         return imageView
     }()
-
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Layout.titleFontSize, weight: .semibold)
@@ -40,7 +40,7 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         label.textColor = .white
         return label
     }()
-
+    
     private let overviewLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: Layout.overviewFontSize)
@@ -48,27 +48,27 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = Layout.maxLines
         return label
     }()
-
+    
     // MARK: - Init
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Setup
-
+    
     private func setupViews() {
         let stack = UIStackView(arrangedSubviews: [posterImageView, titleLabel, overviewLabel])
         stack.axis = .vertical
         stack.spacing = Spacing.extraSmall
         stack.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stack)
-
+        
         NSLayoutConstraint.activate([
             stack.topAnchor.constraint(equalTo: contentView.topAnchor),
             stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -80,13 +80,13 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
             )
         ])
     }
-
+    
     // MARK: - Configure
-
+    
     func configure(with movie: Movie, imageConfig: ImageConfiguration?) {
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
-
+        
         guard
             let imageConfig,
             let posterPath = movie.posterPath,
@@ -97,9 +97,9 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         }
         posterImageView.kf.setImage(with: url)
     }
-
+    
     // MARK: - Reuse
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         posterImageView.kf.cancelDownloadTask()
