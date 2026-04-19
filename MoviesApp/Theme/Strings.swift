@@ -32,4 +32,8 @@ enum Strings {
         static let title = "Favorites"
         static let empty = "No favorites yet"
     }
+    
+    enum Network {
+        static let noConnection = "No internet connection"
+    }
 }

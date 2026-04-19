@@ -17,4 +17,5 @@ enum AppIcon {
     static let noResults = "magnifyingglass.circle"
     static let heart = "heart"
     static let heartFilled = "heart.fill"
+    static let wifiSlash = "wifi.slash"
 }

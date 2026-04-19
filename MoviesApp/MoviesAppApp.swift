@@ -12,6 +12,7 @@ import SwiftData
 struct MoviesAppApp: App {
     @State private var router = Router()
     @State private var favoritesManager: FavoritesManager
+    @State private var networkMonitor = NetworkMonitor()
     
     let modelContainer: ModelContainer
     
@@ -29,15 +30,25 @@ struct MoviesAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $router.path) {
-                TrendingView()
-                    .navigationDestination(for: AppRoute.self) { route in
-                        route.destination
-                    }
+            VStack(spacing: 0) {
+                // Banner at the very top, pushes content down when visible
+                if !networkMonitor.isConnected {
+                    NoConnectionStatusView()
+                }
+                
+                NavigationStack(path: $router.path) {
+                    TrendingView()
+                        .navigationDestination(for: AppRoute.self) { route in
+                            route.destination
+                        }
+                }
             }
+            .animation(.easeInOut(duration: 0.3), value: networkMonitor.isConnected)
             .environment(router)
             .environment(favoritesManager)
+            .environment(networkMonitor)
             .preferredColorScheme(.dark)
+            
         }
         .modelContainer(modelContainer)
     }

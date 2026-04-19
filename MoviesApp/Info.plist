@@ -8,5 +8,7 @@
 	<string>$(API_READ_ACCESS_TOKEN)</string>
 	<key>ENVIRONMENT_NAME</key>
 	<string>$(ENVIRONMENT_NAME)</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>MoviesApp monitors network connectivity to notify you when offline.</string>
 </dict>
 </plist>
