@@ -198,9 +198,9 @@ struct SearchView: View {
     @ViewBuilder
     private func posterImage(for result: SearchViewModel.SearchResult) -> some View {
         if let path = result.posterPath,
-           let url = viewModel.imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
-            KFImage(url)
-                .resizable()
+           let fullURL = viewModel.imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
+            let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.posterXSmall)
+            ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
                 .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))

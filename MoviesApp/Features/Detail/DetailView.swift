@@ -87,9 +87,9 @@ struct DetailView: View {
     private func backdropSection(width: CGFloat, height: CGFloat) -> some View {
         Group {
             if let backdropPath = viewModel.movie.backdropPath ?? viewModel.movie.posterPath,
-               let url = viewModel.imageConfig?.backdropURL(path: backdropPath, width: width) {
-                KFImage(url)
-                    .resizable()
+               let fullURL = viewModel.imageConfig?.backdropURL(path: backdropPath, width: width) {
+                let lowResURL = viewModel.imageConfig?.imageURL(path: backdropPath, size: ImageConfiguration.Size.backdropSmall)
+                ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                     .scaledToFill()
                     .frame(width: width, height: height)
                     .clipped()
@@ -222,9 +222,9 @@ struct DetailView: View {
     private func castMemberView(_ member: CastMember) -> some View {
         VStack(spacing: Spacing.narrow) {
             if let path = member.profilePath,
-               let url = viewModel.imageConfig?.profileURL(path: path, width: Layout.castItemSize) {
-                KFImage(url)
-                    .resizable()
+               let fullURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.profileLarge) {
+                let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.profileSmall)
+                ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                     .scaledToFill()
                     .frame(width: Layout.castItemSize, height: Layout.castItemSize)
                     .clipShape(Circle())

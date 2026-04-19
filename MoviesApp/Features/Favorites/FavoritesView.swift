@@ -111,9 +111,9 @@ struct FavoritesView: View {
     @ViewBuilder
     private func posterImage(for favorite: FavoriteMovie) -> some View {
         if let path = favorite.posterPath,
-           let url = imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
-            KFImage(url)
-                .resizable()
+           let fullURL = imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
+            let lowResURL = imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.posterXSmall)
+            ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
                 .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
