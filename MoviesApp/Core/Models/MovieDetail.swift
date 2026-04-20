@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - MovieDetail
 
-struct MovieDetail: Decodable, Identifiable, Sendable {
+struct MovieDetail: Codable, Identifiable, Sendable {
     let id: Int
     let title: String
     let overview: String
@@ -31,14 +31,14 @@ struct MovieDetail: Decodable, Identifiable, Sendable {
 
 // MARK: - Genre
 
-struct Genre: Decodable, Identifiable, Sendable {
+struct Genre: Codable, Identifiable, Sendable {
     let id: Int
     let name: String
 }
 
 // MARK: - ProductionCompany
 
-struct ProductionCompany: Decodable, Identifiable, Sendable {
+struct ProductionCompany: Codable, Identifiable, Sendable {
     let id: Int
     let name: String
     let logoPath: String?
@@ -46,7 +46,7 @@ struct ProductionCompany: Decodable, Identifiable, Sendable {
 
 // MARK: - SpokenLanguage
 
-struct SpokenLanguage: Decodable, Sendable {
+struct SpokenLanguage: Codable, Sendable {
     let englishName: String
     let name: String
 }

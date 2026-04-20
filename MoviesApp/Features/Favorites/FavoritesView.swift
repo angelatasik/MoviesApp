@@ -112,7 +112,7 @@ struct FavoritesView: View {
     private func posterImage(for favorite: FavoriteMovie) -> some View {
         if let path = favorite.posterPath,
            let fullURL = imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
-            let lowResURL = imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.posterXSmall)
+            let lowResURL = imageConfig?.imageURL(path: path, size: ImageSize.posterXSmall)
             ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Movie: Decodable, Identifiable, Hashable, Sendable {
+struct Movie: Codable, Identifiable, Hashable, Sendable {
     let id: Int
     let title: String
     let overview: String

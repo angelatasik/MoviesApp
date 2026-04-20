@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PagedResponse<T: Decodable>: Decodable, Sendable {
+struct PagedResponse<T: Codable>: Codable, Sendable {
     let page: Int
     let results: [T]
     let totalPages: Int

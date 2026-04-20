@@ -26,15 +26,21 @@ final class TrendingViewModel {
 
     private let repository: MovieRepositoryProtocol
     private let imageCache: ImageConfigurationCaching
+    private let prefetcher: ContentPrefetcher
+    private let networkMonitor: NetworkMonitor
 
     // MARK: - Init
 
     init(
         repository: MovieRepositoryProtocol,
-        imageCache: ImageConfigurationCaching
+        imageCache: ImageConfigurationCaching,
+        prefetcher: ContentPrefetcher,
+        networkMonitor: NetworkMonitor
     ) {
         self.repository = repository
         self.imageCache = imageCache
+        self.prefetcher = prefetcher
+        self.networkMonitor = networkMonitor
         self.imageConfig = imageCache.configuration
     }
 
@@ -56,6 +62,7 @@ final class TrendingViewModel {
         guard let index = movies.firstIndex(where: { $0.id == currentItem.id }) else { return }
         let threshold = movies.count - 5
         guard index >= threshold else { return }
+        guard networkMonitor.isConnected else { return }
         await loadNextPage()
     }
 
@@ -69,6 +76,7 @@ final class TrendingViewModel {
             movies = response.results
             currentPage = response.page
             totalPages = response.totalPages
+            await prefetcher.prefetch(movies: response.results)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -85,6 +93,7 @@ final class TrendingViewModel {
             let response = try await repository.fetchTrending(page: currentPage + 1)
             movies.append(contentsOf: response.results)
             currentPage = response.page
+            await prefetcher.prefetch(movies: response.results)
         } catch {
             errorMessage = error.localizedDescription
         }

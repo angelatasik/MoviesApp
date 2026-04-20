@@ -88,7 +88,10 @@ struct DetailView: View {
         Group {
             if let backdropPath = viewModel.movie.backdropPath ?? viewModel.movie.posterPath,
                let fullURL = viewModel.imageConfig?.backdropURL(path: backdropPath, width: width) {
-                let lowResURL = viewModel.imageConfig?.imageURL(path: backdropPath, size: ImageConfiguration.Size.backdropSmall)
+                let lowResURL = viewModel.imageConfig?.imageURL(
+                    path: backdropPath,
+                    size: ImageSize.backdropSmall
+                )
                 ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                     .scaledToFill()
                     .frame(width: width, height: height)
@@ -222,8 +225,8 @@ struct DetailView: View {
     private func castMemberView(_ member: CastMember) -> some View {
         VStack(spacing: Spacing.narrow) {
             if let path = member.profilePath,
-               let fullURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.profileLarge) {
-                let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.profileSmall)
+               let fullURL = viewModel.imageConfig?.imageURL(path: path, size: ImageSize.profileLarge) {
+                let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageSize.profileSmall)
                 ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                     .scaledToFill()
                     .frame(width: Layout.castItemSize, height: Layout.castItemSize)

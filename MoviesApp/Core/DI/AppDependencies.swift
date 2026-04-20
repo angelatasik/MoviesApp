@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class AppDependencies {
     static let shared = AppDependencies()
 
@@ -22,13 +23,28 @@ final class AppDependencies {
         )
     }()
 
+    let offlineStore = OfflineStore()
+
     private(set) lazy var movieRepository: MovieRepositoryProtocol = {
-        MovieRepository(networkClient: networkClient)
+        OfflineMovieRepository(
+            remote: MovieRepository(networkClient: networkClient),
+            store: offlineStore,
+            monitor: networkMonitor
+        )
     }()
-    
+
     private(set) lazy var imageConfigurationCache: ImageConfigurationCaching = {
         ImageConfigurationCache()
     }()
+
+    private(set) lazy var contentPrefetcher: ContentPrefetcher = {
+        ContentPrefetcher(
+            repository: movieRepository,
+            imageConfig: { [weak self] in self?.imageConfigurationCache.configuration }
+        )
+    }()
+
+    let networkMonitor = NetworkMonitor()
 
     private init() {}
 }

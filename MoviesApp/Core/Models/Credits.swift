@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Credits
 
-struct Credits: Decodable, Sendable {
+struct Credits: Codable, Sendable {
     let id: Int
     let cast: [CastMember]
     let crew: [CrewMember]
@@ -17,7 +17,7 @@ struct Credits: Decodable, Sendable {
 
 // MARK: - CastMember
 
-struct CastMember: Decodable, Identifiable, Sendable {
+struct CastMember: Codable, Identifiable, Sendable {
     let id: Int
     let name: String
     let character: String
@@ -27,7 +27,7 @@ struct CastMember: Decodable, Identifiable, Sendable {
 
 // MARK: - CrewMember
 
-struct CrewMember: Decodable, Identifiable, Sendable {
+struct CrewMember: Codable, Identifiable, Sendable {
     let id: Int
     let name: String
     let job: String

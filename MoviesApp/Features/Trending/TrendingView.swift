@@ -16,7 +16,9 @@ struct TrendingView: View {
         _viewModel = State(
             initialValue: TrendingViewModel(
                 repository: AppDependencies.shared.movieRepository,
-                imageCache: AppDependencies.shared.imageConfigurationCache
+                imageCache: AppDependencies.shared.imageConfigurationCache,
+                prefetcher: AppDependencies.shared.contentPrefetcher,
+                networkMonitor: AppDependencies.shared.networkMonitor
             )
         )
     }

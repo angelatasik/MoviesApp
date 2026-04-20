@@ -21,6 +21,8 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         static let overviewFontSize: CGFloat = 14
         static let overviewTextOpacity: CGFloat = 0.5
         static let fallbackPosterWidth: CGFloat = 200
+        static let placeholderIconOpacity: CGFloat = 0.3
+        static let containerBackgroundOpacity: CGFloat = 0.08
     }
     
     // MARK: - Subviews
@@ -29,7 +31,16 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = CornerRadius.medium
+        view.backgroundColor = UIColor.white.withAlphaComponent(Layout.containerBackgroundOpacity)
         return view
+    }()
+
+    private let placeholderIcon: UIImageView = {
+        let config = UIImage.SymbolConfiguration(pointSize: 32, weight: .light)
+        let imageView = UIImageView(image: UIImage(systemName: AppIcon.filmPlaceholder, withConfiguration: config))
+        imageView.tintColor = UIColor.white.withAlphaComponent(Layout.placeholderIconOpacity)
+        imageView.contentMode = .center
+        return imageView
     }()
 
     private let posterImageView: UIImageView = {
@@ -75,13 +86,18 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
     // MARK: - Setup
     
     private func setupViews() {
-        // Poster container holds the image + blur overlay
+        // Poster container holds placeholder + image + blur overlay
+        posterContainer.addSubview(placeholderIcon)
         posterContainer.addSubview(posterImageView)
         posterContainer.addSubview(blurView)
+        placeholderIcon.translatesAutoresizingMaskIntoConstraints = false
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         blurView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            placeholderIcon.centerXAnchor.constraint(equalTo: posterContainer.centerXAnchor),
+            placeholderIcon.centerYAnchor.constraint(equalTo: posterContainer.centerYAnchor),
+
             posterImageView.topAnchor.constraint(equalTo: posterContainer.topAnchor),
             posterImageView.leadingAnchor.constraint(equalTo: posterContainer.leadingAnchor),
             posterImageView.trailingAnchor.constraint(equalTo: posterContainer.trailingAnchor),
@@ -126,14 +142,21 @@ final class TrendingCollectionViewCell: UICollectionViewCell {
             let fullURL = imageConfig.posterURL(path: posterPath, width: posterWidth)
         else {
             posterImageView.image = nil
+            blurView.alpha = 0
             return
         }
 
-        let lowResURL = imageConfig.imageURL(path: posterPath, size: ImageConfiguration.Size.posterXSmall)
+        let lowResURL = imageConfig.imageURL(path: posterPath, size: ImageSize.posterXSmall)
 
         // Load low-res first (blur stays visible), then full-res, then fade out blur
-        posterImageView.kf.setImage(with: lowResURL) { [weak self] _ in
-            self?.posterImageView.kf.setImage(with: fullURL) { [weak self] _ in
+        posterImageView.kf.setImage(with: lowResURL) { [weak self] result in
+            guard let self else { return }
+            if case .failure = result {
+                // Low-res failed — hide blur to show placeholder
+                UIView.animate(withDuration: 0.3) { self.blurView.alpha = 0 }
+                return
+            }
+            self.posterImageView.kf.setImage(with: fullURL) { [weak self] _ in
                 UIView.animate(withDuration: 0.3) {
                     self?.blurView.alpha = 0
                 }

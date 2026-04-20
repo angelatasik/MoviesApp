@@ -12,7 +12,7 @@ import SwiftData
 struct MoviesAppApp: App {
     @State private var router = Router()
     @State private var favoritesManager: FavoritesManager
-    @State private var networkMonitor = NetworkMonitor()
+    @State private var networkMonitor = AppDependencies.shared.networkMonitor
     
     let modelContainer: ModelContainer
     

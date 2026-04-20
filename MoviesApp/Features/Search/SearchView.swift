@@ -199,7 +199,7 @@ struct SearchView: View {
     private func posterImage(for result: SearchViewModel.SearchResult) -> some View {
         if let path = result.posterPath,
            let fullURL = viewModel.imageConfig?.posterURL(path: path, width: Layout.posterWidth) {
-            let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageConfiguration.Size.posterXSmall)
+            let lowResURL = viewModel.imageConfig?.imageURL(path: path, size: ImageSize.posterXSmall)
             ProgressiveImageView(lowResURL: lowResURL, fullURL: fullURL)
                 .scaledToFill()
                 .frame(width: Layout.posterWidth, height: Layout.posterHeight)
