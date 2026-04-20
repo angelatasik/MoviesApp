@@ -52,6 +52,7 @@ struct SearchView: View {
                         .padding(Spacing.compact)
                         .background(.ultraThinMaterial, in: Circle())
                 }
+                .accessibilityIdentifier("search_back_button")
             }
             ToolbarItem(placement: .principal) {
                 Text(Strings.Search.title)
@@ -79,6 +80,7 @@ struct SearchView: View {
                 .focused($isSearchFocused)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
+                .accessibilityIdentifier("search_field")
 
             if !viewModel.query.isEmpty {
                 Button {
@@ -152,6 +154,7 @@ struct SearchView: View {
             LazyVStack(spacing: Spacing.medium) {
                 ForEach(viewModel.results) { result in
                     resultRow(result)
+                        .accessibilityIdentifier("search_result_row")
                         .onAppear {
                             Task { await viewModel.loadMoreIfNeeded(currentItem: result) }
                         }
@@ -159,6 +162,7 @@ struct SearchView: View {
             }
             .padding(.horizontal, Spacing.large)
         }
+        .accessibilityIdentifier("search_results_list")
     }
 
     private func resultRow(_ result: SearchViewModel.SearchResult) -> some View {

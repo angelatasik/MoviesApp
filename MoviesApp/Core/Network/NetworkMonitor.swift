@@ -20,6 +20,13 @@ final class NetworkMonitor {
     
     init() {
         self.monitor = NWPathMonitor()
+
+        // Allow UI tests to simulate offline mode
+        if ProcessInfo.processInfo.arguments.contains("-UITest_ForceOffline") {
+            isConnected = false
+            return
+        }
+
         startMonitoring()
     }
     

@@ -74,6 +74,7 @@ struct DetailView: View {
                         .padding(Spacing.compact)
                         .background(.ultraThinMaterial, in: Circle())
                 }
+                .accessibilityIdentifier("detail_back_button")
             }
         }
         .task {
@@ -137,6 +138,7 @@ struct DetailView: View {
                     .font(AppTypography.largeTitle)
                     .foregroundStyle(AppColor.primaryText)
                     .shadow(color: AppColor.blackOpacity, radius: Layout.titleShadowRadius)
+                    .accessibilityIdentifier("detail_movie_title")
                 Spacer()
                 favoriteButton
             }
@@ -167,6 +169,7 @@ struct DetailView: View {
                 .foregroundStyle(viewModel.favoriteColor)
                 .symbolEffect(.bounce, value: viewModel.isFavorite)
         }
+        .accessibilityIdentifier("favorite_button")
     }
     
     private var circleSeparator: some View {

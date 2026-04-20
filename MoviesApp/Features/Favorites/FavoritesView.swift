@@ -42,6 +42,7 @@ struct FavoritesView: View {
                         .padding(Spacing.compact)
                         .background(.ultraThinMaterial, in: Circle())
                 }
+                .accessibilityIdentifier("favorites_back_button")
             }
             ToolbarItem(placement: .principal) {
                 Text(Strings.Favorites.title)
@@ -76,11 +77,13 @@ struct FavoritesView: View {
             LazyVStack(spacing: Spacing.medium) {
                 ForEach(favorites) { favorite in
                     favoriteRow(favorite)
+                        .accessibilityIdentifier("favorite_row")
                 }
             }
             .padding(.horizontal, Spacing.large)
             .padding(.top, Spacing.medium)
         }
+        .accessibilityIdentifier("favorites_list")
     }
     
     private func favoriteRow(_ favorite: FavoriteMovie) -> some View {

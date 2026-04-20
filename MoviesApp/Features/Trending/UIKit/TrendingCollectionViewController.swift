@@ -72,6 +72,9 @@ extension TrendingCollectionViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: movies[indexPath.item], imageConfig: imageConfig)
+        cell.isAccessibilityElement = true
+        cell.accessibilityIdentifier = "trending_movie_cell_\(indexPath.item)"
+        cell.accessibilityLabel = movies[indexPath.item].title
         return cell
     }
 }

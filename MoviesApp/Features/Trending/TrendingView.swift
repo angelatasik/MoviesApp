@@ -54,6 +54,7 @@ struct TrendingView: View {
                         .font(AppTypography.sectionTitle)
                         .foregroundStyle(AppColor.primaryText)
                 }
+                .accessibilityIdentifier("favorites_button")
             }
             
             // Center — title
@@ -74,6 +75,7 @@ struct TrendingView: View {
                         .font(AppTypography.sectionTitle)
                         .foregroundStyle(AppColor.primaryText)
                 }
+                .accessibilityIdentifier("search_button")
             }
         }
         .toolbarColorScheme(.dark, for: .navigationBar)

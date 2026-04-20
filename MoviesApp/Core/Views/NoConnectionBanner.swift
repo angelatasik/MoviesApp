@@ -23,5 +23,6 @@ struct NoConnectionStatusView: View {
         .padding(.vertical, Spacing.small)
         .background(Color.red.opacity(0.85))
         .transition(.move(edge: .top).combined(with: .opacity))
+        .accessibilityIdentifier("no_connection_banner")
     }
 }

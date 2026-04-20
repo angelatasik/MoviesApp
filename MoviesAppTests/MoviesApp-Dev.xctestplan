@@ -29,6 +29,13 @@
         "identifier" : "703BC49F2F900BF100C11472",
         "name" : "MoviesAppTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MoviesApp.xcodeproj",
+        "identifier" : "703BC4A92F900BF100C11472",
+        "name" : "MoviesAppUITests"
+      }
     }
   ],
   "version" : 1
