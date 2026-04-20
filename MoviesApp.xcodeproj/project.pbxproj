@@ -34,6 +34,7 @@
 		703BC4BF2F904ED100C11472 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = MoviesApp/.swiftlint.yml; sourceTree = "<group>"; };
 		703BC4F12F905CE100C11472 /* Dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Dev.xcconfig; path = MoviesApp/Dev.xcconfig; sourceTree = "<group>"; };
 		703BC4F72F905D1D00C11472 /* Prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Prod.xcconfig; path = MoviesApp/Prod.xcconfig; sourceTree = "<group>"; };
+		708FF5552F960E37004E52A6 /* MoviesApp-Dev.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = "MoviesApp-Dev.xctestplan"; path = "MoviesAppTests/MoviesApp-Dev.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -96,6 +97,7 @@
 		703BC48A2F900BEF00C11472 = {
 			isa = PBXGroup;
 			children = (
+				708FF5552F960E37004E52A6 /* MoviesApp-Dev.xctestplan */,
 				703BC4F12F905CE100C11472 /* Dev.xcconfig */,
 				703BC4F72F905D1D00C11472 /* Prod.xcconfig */,
 				703BC4BF2F904ED100C11472 /* .swiftlint.yml */,

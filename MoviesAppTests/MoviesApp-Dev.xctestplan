@@ -1,0 +1,35 @@
+{
+  "configurations" : [
+    {
+      "id" : "E9B74E41-EE02-4CFD-9908-8319DA94142D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "OS_ACTIVITY_MODE",
+        "value" : "disable"
+      }
+    ],
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:MoviesApp.xcodeproj",
+      "identifier" : "703BC4922F900BEF00C11472",
+      "name" : "MoviesApp"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:MoviesApp.xcodeproj",
+        "identifier" : "703BC49F2F900BF100C11472",
+        "name" : "MoviesAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}
