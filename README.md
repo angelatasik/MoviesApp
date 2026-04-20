@@ -6,7 +6,7 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Features](#features)
 - [Screenshots](#screenshots)
@@ -19,7 +19,7 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core
 - **Trending Movies** — Paginated list of trending movies with infinite scroll
@@ -39,23 +39,23 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 
 ---
 
-## 📱 Screenshots
+## Screenshots
 
 | Trending | Details | Favorites |
 |:---:|:---:|:---:|
 | ![Trending](docs/screenshots/trending-movies-view.png) | ![Details](docs/screenshots/details-view.png) | ![Favourites](docs/screenshots/favourites-view.png) |
 
-| Search | Search Results | TV Shows | No Results |
-|:---:|:---:|:---:|:---:|
-| ![Start Typing](docs/screenshots/start-typing-search.png) | ![Searching](docs/screenshots/searching-movies.png) | ![TV Shows](docs/screenshots/tvShows-search-result.png) | ![NoResults](docs/screenshots/noResult-found-search.png) |
+| Search | Search Results | TV Shows |
+|:---:|:---:|:---:|
+| ![Start Typing](docs/screenshots/start-typing-search.png) | ![Searching](docs/screenshots/searching-movies.png) | ![TV Shows](docs/screenshots/tvShows-search-result.png) |
 
-| Offline Mode |
-|:---:|
-| ![Offline](docs/screenshots/offline-mode.png) |
+| No Search Results | Offline Mode |
+|:---:|:---:|
+| ![NoResults](docs/screenshots/noResult-found-search.png) | ![Offline](docs/screenshots/offline-mode.png) |
 
 ---
 
-## 🏛 Architecture
+## Architecture
 
 The app follows **MVVM + Repository + Clean Architecture** with strict separation of concerns:
 
@@ -93,7 +93,7 @@ The app follows **MVVM + Repository + Clean Architecture** with strict separatio
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 MoviesApp/
@@ -119,7 +119,7 @@ MoviesApp/
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -135,7 +135,7 @@ MoviesApp/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Xcode 26.0+
@@ -179,7 +179,7 @@ MoviesApp/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The project achieves **~94% code coverage** on the framework target.
 
@@ -216,11 +216,11 @@ MoviesAppUITests/            # UI tests (XCTest / XCUITest)
 
 ---
 
-## 👩‍💻 Author
+## Author
 
 **Angela Tasikj**  
-📍 Skopje, North Macedonia  
-🌐 [GitHub](https://github.com/angelatasik/MoviesApi)
+
+🌐 [GitHub](https://github.com/angelatasik/MoviesApp)
 
 Built as part of an iOS technical assessment.
 
