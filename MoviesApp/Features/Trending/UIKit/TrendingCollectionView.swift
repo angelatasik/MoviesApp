@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MoviesCore
 
 struct TrendingCollectionView: UIViewControllerRepresentable {
 

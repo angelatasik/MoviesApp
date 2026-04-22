@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import Kingfisher
 import SwiftData
+import MoviesCore
 
 struct DetailView: View {
     

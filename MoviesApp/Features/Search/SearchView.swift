@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Kingfisher
+import MoviesCore
 
 struct SearchView: View {
 

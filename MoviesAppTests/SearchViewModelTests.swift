@@ -7,6 +7,7 @@
 
 import Testing
 @testable import MoviesApp
+import MoviesCore
 
 // MARK: - Mock Repository
 

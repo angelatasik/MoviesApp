@@ -8,6 +8,7 @@
 import Testing
 import Foundation
 @testable import MoviesApp
+import MoviesCore
 
 @Suite("NetworkError Tests")
 struct NetworkErrorTests {

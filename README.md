@@ -2,7 +2,7 @@
 
 A native iOS movie discovery app built with SwiftUI and UIKit, powered by [The Movie Database (TMDB)](https://www.themoviedb.org/) API.
 
-Browse trending movies, search across movies and TV shows, explore detailed information including cast and genres, and save your favorites — all with offline support.
+Browse trending movies, search across movies and TV shows, explore detailed information including cast and genres, and save your favorites — all with offline support. The core business logic is extracted into a standalone Swift Package (`MoviesCore`) supporting iOS, iPadOS, tvOS, and macOS.
 
 ---
 
@@ -11,6 +11,7 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Architecture](#architecture)
+- [MoviesCore Package](#moviescore-package)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
@@ -28,6 +29,7 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 - **Custom Navigation** — Router pattern with programmatic navigation
 
 ### Bonus
+- **Multi-Platform Core** — Business logic extracted into `MoviesCore` Swift Package supporting iOS, iPadOS, tvOS, and macOS
 - **Favorites** — Mark movies as favorite, persisted with SwiftData
 - **Offline Mode** — Cached trending and detail data available without internet
 - **No-Connection Banner** — Global network status indicator
@@ -57,35 +59,42 @@ Browse trending movies, search across movies and TV shows, explore detailed info
 
 ## Architecture
 
-The app follows **MVVM + Repository + Clean Architecture** with strict separation of concerns:
+The app follows **MVVM + Repository + Clean Architecture** with strict separation of concerns. The core business logic is packaged as a standalone, multi-platform Swift Package:
 
 ```
 ┌─────────────────────────────────────────┐
-│             Views (SwiftUI/UIKit)        │
-│        (TrendingView, DetailView...)     │
+│     MoviesApp (iOS, SwiftUI + UIKit)    │
+│   Views, ViewModels, Navigation, Theme  │
 └────────────────┬────────────────────────┘
-                 │ binds to
+                 │ imports
                  ▼
 ┌─────────────────────────────────────────┐
-│            ViewModels (@Observable)      │
-│     (TrendingViewModel, DetailVM...)     │
+│       MoviesCore (Swift Package)        │
+│   iOS · iPadOS · tvOS · macOS support   │
+└────────────────┬────────────────────────┘
+                 │ contains
+                 ▼
+┌─────────────────────────────────────────┐
+│         ViewModels (@Observable)        │
+│     (TrendingViewModel, DetailVM...)    │
 └────────────────┬────────────────────────┘
                  │ calls
                  ▼
 ┌─────────────────────────────────────────┐
-│         Repositories (Protocols)         │
-│   (MovieRepository, OfflineRepository)   │
+│        Repositories (Protocols)         │
+│   (MovieRepository, OfflineRepository)  │
 └────────────────┬────────────────────────┘
                  │ uses
                  ▼
 ┌─────────────────────────────────────────┐
-│       Network Layer + Cache Layer        │
-│ (URLSession, Interceptors, OfflineStore,  │
-│          SwiftData)                       │
+│       Network Layer + Cache Layer       │
+│(URLSession, Interceptors, OfflineStore, │
+│                SwiftData)               │
 └─────────────────────────────────────────┘
 ```
 
 ### Key Patterns
+- **Multi-Platform Package** — Core logic packaged as a Swift Package supporting four Apple platforms
 - **Protocol-Based DI** — All dependencies injected via protocols for testability
 - **Router Pattern** — Centralized navigation with `@Observable` + `NavigationPath`
 - **Swift Concurrency** — `async/await`, actors, and `@MainActor` isolation
@@ -93,28 +102,76 @@ The app follows **MVVM + Repository + Clean Architecture** with strict separatio
 
 ---
 
+## MoviesCore Package
+
+`MoviesCore` is a standalone Swift Package that contains all platform-agnostic business logic. It can be consumed by any app across Apple platforms.
+
+### Supported Platforms
+- iOS 17+
+- iPadOS 17+ (via iOS)
+- tvOS 17+
+- macOS 14+
+
+### What's in the Package
+
+```
+MoviesCore/
+├── Sources/
+│   └── MoviesCore/
+│       ├── Models/          # Movie, MovieDetail, Credits, TVShow, etc.
+│       ├── Networking/      # NetworkClient, Endpoint, Interceptors
+│       ├── Repositories/    # Protocol-based data access
+│       ├── Cache/           # Image prefetching & offline store
+│       ├── Storage/         # SwiftData models
+│       ├── Helpers/         # DateFormatting and utilities
+│       └── Views/           # Progressive image loading (cross-platform)
+└── Package.swift
+```
+
+### Why Swift Package Manager?
+I chose Swift Package Manager over a traditional `.xcframework` because:
+- **Modern standard** — Apple's recommended approach for reusable code
+- **Multi-platform native** — declarative platform support in `Package.swift`
+- **Seamless integration** — works natively with Xcode
+- **Flexible distribution** — can be used as a local dependency (as here) or published to a remote repository
+- **Source-based** — easier to debug and maintain than binary frameworks
+
+### Public API Design
+Types exposed to consumers are explicitly marked `public` with public initializers, making the framework boundary clear and intentional. Internal implementation details remain `internal`.
+
+---
+
 ## Project Structure
 
 ```
 MoviesApp/
-├── Core/                     # Platform-agnostic, framework-ready code
-│   ├── Cache/                # Image prefetching & offline store
-│   ├── DI/                   # Dependency injection container
-│   ├── Helpers/              # Date formatting, shared utilities
-│   ├── Models/               # Codable models (Movie, MovieDetail, etc.)
-│   ├── Navigation/           # Router and AppRoute
-│   ├── Network/              # Network monitoring
-│   ├── Networking/           # URLSession client, interceptors, endpoints
-│   ├── Repositories/         # Repository protocol + implementations
-│   ├── Storage/              # SwiftData models & managers
-│   └── Views/                # Reusable UI components
-├── Features/                 # Screens and their ViewModels
-│   ├── Trending/             # UIKit collection view + SwiftUI wrapper
-│   ├── Detail/
-│   ├── Search/
-│   └── Favorites/
-├── Theme/                    # Design system (colors, typography, spacing)
-└── MoviesAppApp.swift        # App entry point
+├── MoviesCore/                    # Multi-platform Swift Package
+│   ├── Package.swift
+│   └── Sources/
+│       └── MoviesCore/
+│           ├── Cache/
+│           ├── Helpers/
+│           ├── Models/
+│           ├── Networking/
+│           ├── Repositories/
+│           ├── Storage/
+│           └── Views/
+│
+├── MoviesApp/                     # Main iOS app
+│   ├── Core/
+│   │   ├── DI/                    # Dependency injection container
+│   │   ├── Navigation/            # Router and AppRoute (SwiftUI-specific)
+│   │   └── Views/                 # NoConnectionBanner (SwiftUI-specific)
+│   ├── Features/
+│   │   ├── Trending/              # UIKit collection view + SwiftUI wrapper
+│   │   ├── Detail/
+│   │   ├── Search/
+│   │   └── Favorites/
+│   ├── Theme/                     # Design system
+│   └── MoviesAppApp.swift         # App entry point
+│
+├── MoviesAppTests/                # Unit tests
+└── MoviesAppUITests/              # UI tests
 ```
 
 ---
@@ -124,10 +181,11 @@ MoviesApp/
 | Layer | Technology |
 |---|---|
 | UI | SwiftUI (primary), UIKit via `UIViewRepresentable` |
-| Language | Swift 5 with `@MainActor` default isolation |
+| Language | Swift 6 with `@MainActor` default isolation |
 | Concurrency | `async/await`, actors, structured concurrency |
 | Networking | URLSession with custom interceptors |
 | Persistence | SwiftData (favorites) + file-based JSON cache (offline) |
+| Packaging | Swift Package Manager (local package for multi-platform core) |
 | Image Loading | [Kingfisher](https://github.com/onevcat/Kingfisher) |
 | Linting | SwiftLint |
 | Testing | Swift Testing (unit) + XCTest (UI) |
@@ -155,6 +213,7 @@ MoviesApp/
 ```bash
    open MoviesApp.xcodeproj
 ```
+   Xcode will automatically resolve the `MoviesCore` local package dependency.
 
 3. **(Optional) Configure signing for real device:**
    
@@ -205,7 +264,6 @@ MoviesAppUITests/            # UI tests (XCTest / XCUITest)
 - **Unit tests only:** Right-click `MoviesAppTests` in Test Navigator → Run
 - **UI tests only:** Right-click `MoviesAppUITests` in Test Navigator → Run
 
-
 ### Testing Highlights
 - **Async testing** with `Task.sleep` to verify debounce behavior
 - **Protocol-based mocking** via `MockMovieRepository` and `MockImageConfigurationCache`
@@ -223,5 +281,3 @@ MoviesAppUITests/            # UI tests (XCTest / XCUITest)
 🌐 [GitHub](https://github.com/angelatasik/MoviesApp)
 
 Built as part of an iOS technical assessment.
-
----

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MoviesCore
 
 enum AppRoute: Hashable, Sendable {
     case movieDetail(Movie)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		703BC61C2F92671100C11472 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 703BC61B2F92671100C11472 /* Kingfisher */; };
+		708FF8D72F982AB6004E52A6 /* MoviesCore in Frameworks */ = {isa = PBXBuildFile; productRef = 708FF8D62F982AB6004E52A6 /* MoviesCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				708FF8D72F982AB6004E52A6 /* MoviesCore in Frameworks */,
 				703BC61C2F92671100C11472 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +150,7 @@
 			name = MoviesApp;
 			packageProductDependencies = (
 				703BC61B2F92671100C11472 /* Kingfisher */,
+				708FF8D62F982AB6004E52A6 /* MoviesCore */,
 			);
 			productName = MoviesApp;
 			productReference = 703BC4932F900BEF00C11472 /* MoviesApp.app */;
@@ -234,6 +237,7 @@
 			packageReferences = (
 				703BC4BD2F904A7B00C11472 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 				703BC6192F92665700C11472 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				708FF8D52F982AB6004E52A6 /* XCLocalSwiftPackageReference "MoviesCore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 703BC4942F900BEF00C11472 /* Products */;
@@ -457,6 +461,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -491,6 +496,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -669,6 +675,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -807,6 +814,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -938,6 +946,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1069,6 +1078,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQ5G26QLC7;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1193,6 +1203,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		708FF8D52F982AB6004E52A6 /* XCLocalSwiftPackageReference "MoviesCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MoviesCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		703BC4BD2F904A7B00C11472 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1217,6 +1234,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 703BC6192F92665700C11472 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		708FF8D62F982AB6004E52A6 /* MoviesCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MoviesCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

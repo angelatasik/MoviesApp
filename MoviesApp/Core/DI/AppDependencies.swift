@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MoviesCore
 
 @MainActor
 final class AppDependencies {

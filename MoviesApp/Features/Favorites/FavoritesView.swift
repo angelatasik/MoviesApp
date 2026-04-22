@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-import Kingfisher
+import MoviesCore
 
 struct FavoritesView: View {
     
